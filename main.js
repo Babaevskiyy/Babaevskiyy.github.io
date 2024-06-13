@@ -1,4 +1,4 @@
-require('dotenv').config();  // Вызов метода config
+require('dotenv').config(); 
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -31,7 +31,6 @@ app.use((req, res, next) => {
 
 app.use(express.static("uploads"));
 
-//template engine
 app.set('view engine', 'ejs');
 
 

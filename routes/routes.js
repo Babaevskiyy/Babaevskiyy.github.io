@@ -49,26 +49,34 @@ router.post('/add', upload, async (req, res) => {
 });
 
 router.get('/register', (req, res) => {
-    res.render('register', { title: 'Регистрация', error: req.session.error });
-    req.session.error = null;
+    const error = req.session.error;
+    delete req.session.error; 
+    res.render('register', { title: 'Регистрация', error });
 });
 
-// Обработка регистрации
 router.post('/register', async (req, res) => {
     const { username, password } = req.body;
     try {
         const user = new User({ username, password });
         await user.save();
+        req.session.message = {
+            type: 'success',
+            message: 'Регистрация успешно завершена! Теперь вы можете войти.',
+        };
         res.redirect('/login');
     } catch (err) {
         console.error(err);
+        req.session.error = 'Ошибка при регистрации. Пожалуйста, попробуйте снова.';
         res.redirect('/register');
     }
 });
 
 router.get('/login', (req, res) => {
-    res.render('login', { title: 'Вход', error: req.session.error });
-    req.session.error = null;
+    const message = req.session.message;
+    const error = req.session.error;
+    delete req.session.message; 
+    delete req.session.error;   
+    res.render('login', { title: 'Вход', message, error });
 });
 
 router.post('/login', async (req, res) => {
