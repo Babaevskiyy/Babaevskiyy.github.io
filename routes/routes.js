@@ -5,11 +5,6 @@ const User = require('../models/user');
 const multer = require('multer');
 const fs = require("fs");
 
-router.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-  });
-
 function isAuthenticated(req, res, next) {
     if (req.session.user) {
         return next();
@@ -110,7 +105,7 @@ router.get("/", isAuthenticated, async (req, res) => {
         res.render('index', {
             title: 'АВТОСКЛАД',
             products: products,
-            user: req.session.user
+            user: req.session.user 
         });
     } catch (err) {
         res.json({ message: err.message });
