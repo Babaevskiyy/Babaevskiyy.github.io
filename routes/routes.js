@@ -5,6 +5,11 @@ const User = require('../models/user');
 const multer = require('multer');
 const fs = require("fs");
 
+router.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+  });
+
 function isAuthenticated(req, res, next) {
     if (req.session.user) {
         return next();
