@@ -5,7 +5,6 @@ const User = require('../models/user');
 const multer = require('multer');
 const fs = require("fs");
 
-// Middleware для проверки авторизации
 function isAuthenticated(req, res, next) {
     if (req.session.user) {
         return next();
@@ -67,13 +66,11 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// Страница входа
 router.get('/login', (req, res) => {
     res.render('login', { title: 'Вход', error: req.session.error });
     req.session.error = null;
 });
 
-// Обработка входа
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
     try {
@@ -92,7 +89,6 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Маршрут для выхода из профиля
 router.get('/logout', (req, res) => {
     req.session.destroy((err) => {
         if (err) {
@@ -103,14 +99,13 @@ router.get('/logout', (req, res) => {
     });
 });
 
-// Главная страница и защищенные маршруты с проверкой авторизации
 router.get("/", isAuthenticated, async (req, res) => {
     try {
         const products = await Product.find().exec();
         res.render('index', {
             title: 'АВТОСКЛАД',
             products: products,
-            user: req.session.user // Передача пользователя в шаблон
+            user: req.session.user
         });
     } catch (err) {
         res.json({ message: err.message });
