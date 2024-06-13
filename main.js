@@ -27,6 +27,10 @@ app.use(helmet.contentSecurityPolicy({
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+app.get("/", (req, res) => {
+    res.render("index", { title: "Главная страница" });
+  });
+
 app.use(session({
   secret: 'my secret key',
   saveUninitialized: true,
